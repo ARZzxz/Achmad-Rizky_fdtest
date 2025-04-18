@@ -15,6 +15,15 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
+    <nav class="bg-white shadow p-4 flex justify-between items-center">
+    <a href="{{ route('landing') }}" class="font-bold text-lg text-blue-600">📚 BookApp</a>
+
+    <div class="space-x-4">
+        <a href="{{ route('login') }}" class="text-blue-600">Login</a>
+        <a href="{{ route('register') }}" class="text-blue-600">Register</a>
+    </div>
+</nav>
+
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">

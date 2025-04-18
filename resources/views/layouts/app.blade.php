@@ -17,6 +17,21 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
+<nav class="bg-gray-100 shadow p-4 flex justify-between items-center">
+    <a href="{{ route('dashboard') }}" class="font-bold text-lg text-gray-800">📚 Dashboard</a>
+
+    <div class="space-x-4 flex items-center">
+        <a href="{{ route('books.index') }}" class="text-blue-600">My Books</a>
+        <a href="{{ route('users.index') }}" class="text-blue-600">Users</a>
+        <a href="{{ route('landing') }}" class="text-blue-600">Landing</a>
+
+        <form method="POST" action="{{ route('logout') }}" class="inline">
+            @csrf
+            <button type="submit" class="text-red-600">Logout</button>
+        </form>
+    </div>
+</nav>
+
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
