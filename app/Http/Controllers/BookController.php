@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = Book::where('user_id', auth()->id());
-        $books = $query->paginate(10);
+        $books = Book::where('user_id', auth()->id())->latest()->paginate(10);
         return view('books.index', compact('books'));
     }
 
@@ -23,11 +22,11 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'description' => 'required',
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'description' => 'required|string',
             'thumbnail' => 'nullable|image|max:2048',
-            'rating' => 'required|integer|min:1|max:5'
+            'rating' => 'required|integer|between:1,5',
         ]);
 
         if ($request->hasFile('thumbnail')) {
@@ -37,32 +36,35 @@ class BookController extends Controller
         $data['user_id'] = auth()->id();
         Book::create($data);
 
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')->with('success', 'Book added!');
     }
 
     public function edit(Book $book)
     {
+        $this->authorize('update', $book);
         return view('books.edit', compact('book'));
     }
 
     public function update(Request $request, Book $book)
     {
+        $this->authorize('update', $book);
         $data = $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'description' => 'required',
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'description' => 'required|string',
             'thumbnail' => 'nullable|image|max:2048',
-            'rating' => 'required|integer|min:1|max:5'
+            'rating' => 'required|integer|between:1,5',
         ]);
 
         if ($request->hasFile('thumbnail')) {
-            Storage::disk('public')->delete($book->thumbnail);
+            if ($book->thumbnail) {
+                Storage::disk('public')->delete($book->thumbnail);
+            }
             $data['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
         }
 
         $book->update($data);
-
-        return redirect()->route('books.index');
+        return redirect()->route('books.index')->with('success', 'Book updated!');
     }
 
     public function destroy(Book $book)
@@ -75,14 +77,24 @@ class BookController extends Controller
         return back()->with('success', 'Book deleted!');
     }
 
-    public function landing(Request $request)
+    public function public(Request $request)
     {
-        $books = Book::query()
-            ->when($request->author, fn($q) => $q->where('author', $request->author))
-            ->when($request->rating, fn($q) => $q->where('rating', $request->rating))
-            ->when($request->date, fn($q) => $q->whereDate('created_at', $request->date))
-            ->paginate(10);
+        $query = Book::query();
 
-        return view('landing', compact('books'));
+        if ($request->filled('author')) {
+            $query->where('author', 'ILIKE', '%' . $request->author . '%');
+        }
+
+        if ($request->filled('rating')) {
+            $query->where('rating', $request->rating);
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $books = $query->latest()->paginate(6);
+
+        return view('welcome', compact('books'));
     }
 }
