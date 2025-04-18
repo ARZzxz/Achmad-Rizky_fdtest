@@ -1,12 +1,11 @@
 
 ---
 
-```md
-# Aplikasi Manajemen Buku - Laravel
+### Aplikasi Manajemen Buku - Laravel
 
 Aplikasi ini merupakan aplikasi manajemen buku dengan fitur autentikasi pengguna, CRUD buku, dashboard, dan halaman landing publik dengan filter dan pagination. Dibangun menggunakan Laravel dan PostgreSQL.
 
-## Fitur Utama
+### Fitur Utama
 
 - Registrasi dan Login pengguna
 - Verifikasi email
