@@ -25,7 +25,7 @@ Ikuti langkah-langkah berikut untuk menjalankan project ini di lingkungan lokal 
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/namakamu/nama-repo.git
+git clone https://github.com/ARZzxz/Achmad-Rizky_fdtest.git
 cd nama-repo
 ```
 
@@ -53,9 +53,9 @@ APP_URL=http://localhost:8000
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=nama_database
-DB_USERNAME=nama_user
-DB_PASSWORD=password
+DB_DATABASE=AchmadRizky_fdtest
+DB_USERNAME=postgres
+DB_PASSWORD=devani0612
 ```
 
 ### 5. Generate Key Aplikasi
@@ -102,14 +102,6 @@ Gambar (thumbnail) buku disimpan di dalam folder `storage/app/public/thumbnails`
 
 ```bash
 php artisan storage:link
-```
-
----
-
-## 📄 Lisensi
-
-Project ini bersifat open-source dan menggunakan lisensi [MIT](LICENSE).
-
 ```
 
 ---
